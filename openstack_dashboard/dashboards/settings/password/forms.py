@@ -12,9 +12,12 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import base64
+from random import randint
+
+from django import http
 from django.conf import settings
 from django.forms import ValidationError  # noqa
-from django import http
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.debug import sensitive_variables  # noqa
 
@@ -23,7 +26,6 @@ from horizon import forms
 from horizon import messages
 from horizon.utils import functions as utils
 from horizon.utils import validators
-
 from openstack_dashboard import api
 
 
@@ -36,10 +38,13 @@ class PasswordForm(forms.SelfHandlingForm):
         widget=forms.PasswordInput(render_value=False),
         regex=validators.password_validator(),
         error_messages={'invalid':
-                        validators.password_validator_msg()})
+                            validators.password_validator_msg()})
     confirm_password = forms.CharField(
         label=_("Confirm new password"),
         widget=forms.PasswordInput(render_value=False))
+    new_secret_key = forms.CharField(
+        label=_("New Secret Key"),
+        widget=forms.CheckboxInput(render_value=False))
     no_autocomplete = True
 
     def clean(self):
@@ -58,6 +63,18 @@ class PasswordForm(forms.SelfHandlingForm):
 
         if user_is_editable:
             try:
+                if data['new_secret_key'] is True:
+                    credential = api.keystone.create_credentials(request,
+                                                                 api.keystone.auth_utils.get_user(
+                                                                     request).id,
+                                                                 'totp',
+                                                                 base64.b32encode(str(randint(1000000000, 9999999999))),
+                                                                 None)
+                    response = http.HttpResponseRedirect(settings.LOGOUT_URL)
+                    msg = _("New secret key is: '%s'. Please log in again to continue.", "123456")
+                    utils.add_logout_reason(request, response, msg)
+                    return response
+
                 api.keystone.user_update_own_password(request,
                                                       data['current_password'],
                                                       data['new_password'])

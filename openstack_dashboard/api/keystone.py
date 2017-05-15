@@ -823,6 +823,14 @@ def get_default_role(request):
                 break
     return DEFAULT_ROLE
 
+def credetial_manager(request):
+    client = keystoneclient(request)
+
+    from keystoneclient.v3 import credentials
+    return credentials.CredentialManager(client)
+
+def create_credentials(request, user_id, type, blob, project=None):
+    return credetial_manager(request).create(user_id, type, blob, project)
 
 def ec2_manager(request):
     client = keystoneclient(request)
