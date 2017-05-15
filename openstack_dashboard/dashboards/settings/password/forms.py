@@ -42,7 +42,7 @@ class PasswordForm(forms.SelfHandlingForm):
     confirm_password = forms.CharField(
         label=_("Confirm new password"),
         widget=forms.PasswordInput(render_value=False))
-    new_secret_key = forms.CharField(
+    new_secret_key = forms.CheckboxInput(
         label=_("New Secret Key"),
         widget=forms.CheckboxInput(render_value=False))
     no_autocomplete = True
