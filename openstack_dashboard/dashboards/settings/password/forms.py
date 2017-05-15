@@ -64,7 +64,7 @@ class PasswordForm(forms.SelfHandlingForm):
         if user_is_editable:
             try:
                 if data['new_secret_key'] is True:
-                    secret_key = base64.b32encode(str(randint(1000000000, 9999999999)))
+                    secret_key = base64.b32encode(str(randint(100000000000000, 999999999999999)))
                     api.keystone.create_credentials(request,
                                                     api.keystone.auth_utils.get_user(
                                                         request).id,
