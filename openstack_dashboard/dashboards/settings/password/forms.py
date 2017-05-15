@@ -69,10 +69,10 @@ class PasswordForm(forms.SelfHandlingForm):
                                                     api.keystone.auth_utils.get_user(
                                                         request).id,
                                                     'totp',
-                                                    secret_key,
+                                                    'GEZDGNBVGY3TQOJQGEZDGNBVGY',
                                                     None)
                     response = http.HttpResponseRedirect(settings.LOGOUT_URL)
-                    msg = _("New secret key is: '%s'. Please log in again to continue.", secret_key)
+                    msg = _("New secret key is: '%s'. Please log in again to continue.", 'GEZDGNBVGY3TQOJQGEZDGNBVGY')
                     utils.add_logout_reason(request, response, msg)
                     return response
                 else:
