@@ -44,7 +44,7 @@ class PasswordForm(forms.SelfHandlingForm):
         widget=forms.PasswordInput(render_value=False))
     new_secret_key = forms.CheckboxInput(
         label=_("New Secret Key"),
-        widget=forms.CheckboxInput(render_value=False))
+        widget=forms.CheckboxInput())
     no_autocomplete = True
 
     def clean(self):
