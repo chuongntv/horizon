@@ -11,7 +11,6 @@
 #    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 #    License for the specific language governing permissions and limitations
 #    under the License.
-
 import base64
 from random import randint
 
@@ -65,24 +64,25 @@ class PasswordForm(forms.SelfHandlingForm):
         if user_is_editable:
             try:
                 if data['new_secret_key'] is True:
-                    credential = api.keystone.create_credentials(request,
-                                                                 api.keystone.auth_utils.get_user(
-                                                                     request).id,
-                                                                 'totp',
-                                                                 base64.b32encode(str(randint(1000000000, 9999999999))),
-                                                                 None)
+                    secret_key = base64.b32encode(str(randint(1000000000, 9999999999)))
+                    api.keystone.create_credentials(request,
+                                                    api.keystone.auth_utils.get_user(
+                                                        request).id,
+                                                    'totp',
+                                                    secret_key,
+                                                    None)
                     response = http.HttpResponseRedirect(settings.LOGOUT_URL)
-                    msg = _("New secret key is: '%s'. Please log in again to continue.", "123456")
+                    msg = _("New secret key is: '%s'. Please log in again to continue.", secret_key)
                     utils.add_logout_reason(request, response, msg)
                     return response
-
-                api.keystone.user_update_own_password(request,
-                                                      data['current_password'],
-                                                      data['new_password'])
-                response = http.HttpResponseRedirect(settings.LOGOUT_URL)
-                msg = _("Password changed. Please log in again to continue.")
-                utils.add_logout_reason(request, response, msg)
-                return response
+                else:
+                    api.keystone.user_update_own_password(request,
+                                                          data['current_password'],
+                                                          data['new_password'])
+                    response = http.HttpResponseRedirect(settings.LOGOUT_URL)
+                    msg = _("Password changed. Please log in again to continue.")
+                    utils.add_logout_reason(request, response, msg)
+                    return response
             except Exception:
                 exceptions.handle(request,
                                   _('Unable to change password.'))
