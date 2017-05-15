@@ -32,16 +32,19 @@ from openstack_dashboard import api
 class PasswordForm(forms.SelfHandlingForm):
     current_password = forms.CharField(
         label=_("Current password"),
-        widget=forms.PasswordInput(render_value=False, required=False))
+        widget=forms.PasswordInput(render_value=False),
+        required=False)
     new_password = forms.RegexField(
         label=_("New password"),
-        widget=forms.PasswordInput(render_value=False, required=False),
+        widget=forms.PasswordInput(render_value=False),
+        required=False,
         regex=validators.password_validator(),
         error_messages={'invalid':
                             validators.password_validator_msg()})
     confirm_password = forms.CharField(
         label=_("Confirm new password"),
-        widget=forms.PasswordInput(render_value=False, required=False))
+        required=False,
+        widget=forms.PasswordInput(render_value=False))
     new_secret_key = forms.BooleanField(required=False)
     no_autocomplete = True
 
