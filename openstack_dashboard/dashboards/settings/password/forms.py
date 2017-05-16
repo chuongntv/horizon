@@ -71,12 +71,10 @@ class PasswordForm(forms.SelfHandlingForm):
                                                     'totp',
                                                     'GEZDGNBVGY3TQOJQGEZDGNBVGY',
                                                     None)
-                    response = http.HttpResponseRedirect(settings.LOGOUT_URL)
-                    msg = _(str("New secret key is: ")
-                            .join(str("GEZDGNBVGY3TQOJQGEZDGNBVGY"))
-                            .join(str("Please log in again to continue.")))
-                    utils.add_logout_reason(request, response, msg)
-                    return response
+                    messages.success("New secret key is: "
+                                     .join("GEZDGNBVGY3TQOJQGEZDGNBVGY")
+                                     .join("Please log in again to continue."))
+                    return True
                 else:
                     api.keystone.user_update_own_password(request,
                                                           data['current_password'],
