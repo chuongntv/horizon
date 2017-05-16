@@ -74,7 +74,8 @@ class PasswordForm(forms.SelfHandlingForm):
                     messages.success(
                         request,
                         _("New secret key is: ".join("GEZDGNBVGY3TQOJQGEZDGNBVGY")))
-                    return True
+                    response = http.HttpResponseRedirect("/dashboard/settings/password/")
+                    return response
                 else:
                     api.keystone.user_update_own_password(request,
                                                           data['current_password'],
