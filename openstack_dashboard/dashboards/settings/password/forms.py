@@ -72,7 +72,9 @@ class PasswordForm(forms.SelfHandlingForm):
                                                     'GEZDGNBVGY3TQOJQGEZDGNBVGY',
                                                     None)
                     response = http.HttpResponseRedirect(settings.LOGOUT_URL)
-                    msg = _("New secret key is: '%s'. Please log in again to continue.", 'GEZDGNBVGY3TQOJQGEZDGNBVGY')
+                    msg = _(str("New secret key is: ")
+                            .join(str("GEZDGNBVGY3TQOJQGEZDGNBVGY"))
+                            .join(str("Please log in again to continue.")))
                     utils.add_logout_reason(request, response, msg)
                     return response
                 else:
