@@ -71,10 +71,10 @@ class PasswordForm(forms.SelfHandlingForm):
                                                     'totp',
                                                     'GEZDGNBVGY3TQOJQGEZDGNBVGY',
                                                     None)
-                    message = ("New secret key is: ".join("GEZDGNBVGY3TQOJQGEZDGNBVGY"))
+                    message = ('New secret key is: '.join('GEZDGNBVGY3TQOJQGEZDGNBVGY'))
                     messages.success(
                         request,
-                        _(message))
+                        _('GEZDGNBVGY3TQOJQGEZDGNBVGY'))
                     response = http.HttpResponseRedirect("/dashboard/settings/password/")
                     return response
                 else:
