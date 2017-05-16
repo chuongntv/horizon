@@ -71,9 +71,9 @@ class PasswordForm(forms.SelfHandlingForm):
                                                     'totp',
                                                     'GEZDGNBVGY3TQOJQGEZDGNBVGY',
                                                     None)
-                    messages.success("New secret key is: "
-                                     .join("GEZDGNBVGY3TQOJQGEZDGNBVGY")
-                                     .join("Please log in again to continue."))
+                    messages.success(
+                        request,
+                        _("New secret key is: ".join("GEZDGNBVGY3TQOJQGEZDGNBVGY")))
                     return True
                 else:
                     api.keystone.user_update_own_password(request,
